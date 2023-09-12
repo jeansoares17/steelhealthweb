@@ -1,11 +1,8 @@
 import NavBar from "@/components/NavBar";
 import Metas from "./Metas";
-
-async function getMetas(){
-  const url = "http://localhost:8080/api/metas"
-  const resp = await fetch(url, { next: { revalidate: 0 } })
-  return resp.json()
-}
+import Button from "@/components/Button";
+import { PlusIcon  } from '@heroicons/react/24/outline'
+import { getMetas } from "@/actions/metas";
 
 export default async function Metas() {
 
@@ -16,10 +13,16 @@ export default async function Metas() {
       <NavBar active={"metas"} />
 
       <main className="bg-slate-900 mt-10 m-auto max-w-lg p-8 rounded">
-        <h1 className="text-2xl">Metas</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl">Metas</h1>
+          <Button href="/metas/new" >
+            <PlusIcon className="h6 w-6" />
+            criar metas
+          </Button>
+        </div>
 
         <div id="data">
-          {data.map(meta => <Metas key={meta.id} meta={meta} />)}
+          {data.map(metas => <Metas key={metas.id} metas={metas} />)}
         </div>
 
       </main>
