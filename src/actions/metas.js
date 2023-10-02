@@ -1,6 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
+import { cookies } from "next/headers"
 
 const url = process.env.NEXT_PUBLIC_BASE_URL + "/metas"
 
@@ -30,10 +31,17 @@ export async function create(formData){
 }
 
 export async function getMetas() {
-    await new Promise(r => setInterval(r, 5000))
-    const resp = await fetch(url)
+    const token = cookies().get('steelhealth_token')
+    
+    const options = {
+        headers: {
+            "Authorization": `Bearer ${token.value}`
+        }
+    }
+
+    const resp = await fetch(url, options)
     if (!resp.ok){
-        throw new Error("Erro ao obter dados das metas")
+        throw new Error("Erro ao obter dados das contas")
     }
 
     return resp.json()
